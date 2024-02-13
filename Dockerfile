@@ -1,5 +1,5 @@
-# Use a Windows-based Python image
-FROM python:3.8-slim-buster
+# Use a Linux-based Python image
+FROM python:3.11-slim-buster
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -8,20 +8,32 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR /app
 
+# Install necessary build dependencies for dlib
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    libopenblas-dev \
+    liblapack-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libatlas-base-dev \
+    gfortran \
+    && rm -rf /var/lib/apt/lists/*
 
+# Install dependencies for face_recognition
+RUN pip install --no-cache-dir \
+    numpy \
+    scipy \
+    scikit-image \
+    pillow \
+    click \
+    face_recognition_models
 
-# Copy dlib wheel from host to container (assuming you have it locally)
-COPY dlib-19.24.1-cp311-cp311-win_amd64.whl dlib-19.24.1-cp311-cp311-win_amd64.whl
+# Install dlib
+RUN pip install --no-cache-dir dlib
 
-# Install dlib from the downloaded wheel
-RUN pip install dlib-19.24.1-cp311-cp311-win_amd64.whl
-
-# Install face_recognition and other Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy your application code to the container
+# Copy your application code into the container
 COPY . .
-
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
