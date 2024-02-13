@@ -1,11 +1,11 @@
-FROM m03geek/dlib-node
+FROM python:3.11-slim-buster
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+
 WORKDIR /app
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -21,29 +21,17 @@ RUN apt-get update && apt-get install -y \
     libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install CUDA toolkit
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    cuda-toolkit-11-4 \
-    && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for CUDA
-ENV CUDA_HOME /usr/local/cuda
-ENV LD_LIBRARY_PATH /usr/local/cuda/lib64:$LD_LIBRARY_PATH
-ENV PATH /usr/local/cuda/bin:$PATH
-
-# Install Python packages
 RUN pip install --no-cache-dir \
     numpy \
     scipy \
     scikit-image \
     pillow \
     click \
-    face_recognition_models \
-    dlib
+    face_recognition_models
+
+
 
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
-
-
-
