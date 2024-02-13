@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 RUN pip install numpy opencv-python
 
-# Install dlib with reduced build options to save resources
-RUN pip install dlib --no DLIB_USE_CUDA
+
+RUN pip install dlib 
 
 WORKDIR /app
 
