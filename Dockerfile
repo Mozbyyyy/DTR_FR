@@ -22,14 +22,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN pip install --no-cache-dir \
-    numpy \
-    scipy \
-    scikit-image \
-    pillow \
-    click \
-    face_recognition_models
-
 
 
 COPY . .
