@@ -46,9 +46,20 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libcanberra-gtk-module \
     libcanberra-gtk3-module \
-    libqt5opengl5-dev && \
+    libqt5opengl5-dev \
+    libcupti-dev \
+    libnccl2 \
+    libnccl-dev && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
+
+# Install CUDA toolkit
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin && \
+    mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600 && \
+    apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub && \
+    echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /" >> /etc/apt/sources.list.d/cuda.list && \
+    apt-get update && \
+    apt-get -y install cuda
 
 RUN pip install --no-cache-dir numpy
 RUN pip install face_recognition
@@ -61,5 +72,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
-
 
