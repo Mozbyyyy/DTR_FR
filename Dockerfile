@@ -11,10 +11,10 @@ WORKDIR /app
 
 
 # Copy dlib wheel from host to container (assuming you have it locally)
-COPY dlib-19.24.1-cp38-cp38-win_amd64.whl dlib-19.24.1-cp38-cp38-win_amd64.whl
+COPY dlib-19.24.1-cp311-cp311-win_amd64.whl dlib-19.24.1-cp311-cp311-win_amd64.whl
 
 # Install dlib from the downloaded wheel
-RUN pip install dlib-19.24.1-cp38-cp38-win_amd64.whl
+RUN pip install dlib-19.24.1-cp311-cp311-win_amd64.whl
 
 # Install face_recognition and other Python dependencies
 COPY requirements.txt .
