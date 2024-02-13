@@ -47,19 +47,25 @@ RUN apt-get update && apt-get install -y \
     libcanberra-gtk-module \
     libcanberra-gtk3-module \
     libqt5opengl5-dev \
-    libcupti-dev \
-    libnccl2 \
-    libnccl-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
+    && rm -rf /var/lib/apt/lists/* && apt-get clean
 
-# Install CUDA toolkit
+# Add CUDA repository
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin && \
     mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600 && \
     apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub && \
-    echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /" >> /etc/apt/sources.list.d/cuda.list && \
-    apt-get update && \
-    apt-get -y install cuda
+    echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /" >> /etc/apt/sources.list.d/cuda.list
+
+# Add NVIDIA Machine Learning repository
+RUN wget https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/nvidia-machine-learning-repo-ubuntu2004_1.0.0-1_amd64.deb && \
+    dpkg -i nvidia-machine-learning-repo-ubuntu2004_1.0.0-1_amd64.deb && \
+    apt-get update
+
+# Install CUDA toolkit and cuDNN
+RUN apt-get install -y --no-install-recommends \
+    cuda \
+    libcudnn8 \
+    libcudnn8-dev \
+    && rm -rf /var/lib/apt/lists/* && apt-get clean
 
 RUN pip install --no-cache-dir numpy
 RUN pip install face_recognition
@@ -72,4 +78,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
-
