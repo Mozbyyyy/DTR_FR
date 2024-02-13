@@ -1,5 +1,5 @@
 # Use a Windows-based Python image
-FROM python:3.8-windowsservercore
+FROM python:3.8-slim-buster
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
