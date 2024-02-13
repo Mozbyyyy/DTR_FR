@@ -17,15 +17,9 @@ RUN apt-get update && apt-get install -y \
     libhdf5-dev \
     libboost-all-dev \
     libx11-dev \
-    dphys-swapfile \
     && apt-get install -y libavdevice-dev libavfilter-dev libavformat-dev libavcodec-dev libswresample-dev libswscale-dev libavutil-dev \
     && rm -rf /var/lib/apt/lists/*
 
-
-# Set up swap space
-RUN sed -i 's/CONF_SWAPSIZE=.*$/CONF_SWAPSIZE=1024/' /etc/dphys-swapfile
-RUN dphys-swapfile setup
-RUN dphys-swapfile swapon
 
 # Install Python dependencies
 RUN pip install numpy opencv-python
