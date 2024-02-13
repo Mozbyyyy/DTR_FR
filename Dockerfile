@@ -15,7 +15,7 @@ WORKDIR /app
 # RUN [your-command-to-download-files]
 
 # Copy dlib wheel from host to container (assuming you have it locally)
-COPY dlib-19.24.1-cp38-cp38-win_amd64.whl .
+COPY dlib-19.24.1-cp38-cp38-win_amd64.whl
 
 # Install dlib from the downloaded wheel
 RUN pip install dlib-19.24.1-cp38-cp38-win_amd64.whl
