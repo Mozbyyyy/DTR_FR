@@ -1,15 +1,12 @@
-# Use a Linux-based Python image
-FROM python:3.11-slim-buster
+FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu20.04
 
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Set working directory
 WORKDIR /app
 
-# Install necessary build dependencies for dlib
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     libopenblas-dev \
@@ -17,23 +14,33 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
     libpng-dev \
     libtiff-dev \
-    libatlas-base-dev \
-    gfortran \
+    zlib1g-dev \
+    libgif-dev \
+    libwebp-dev \
+    libhdf5-dev \
+    libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies for face_recognition
+# Install CUDA toolkit
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cuda-toolkit-11-4 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables for CUDA
+ENV CUDA_HOME /usr/local/cuda
+ENV LD_LIBRARY_PATH /usr/local/cuda/lib64:$LD_LIBRARY_PATH
+ENV PATH /usr/local/cuda/bin:$PATH
+
+# Install Python packages
 RUN pip install --no-cache-dir \
     numpy \
     scipy \
     scikit-image \
     pillow \
     click \
-    face_recognition_models
+    face_recognition_models \
+    dlib
 
-# Install dlib
-RUN pip install --no-cache-dir dlib
-
-# Copy your application code into the container
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
