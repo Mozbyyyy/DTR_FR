@@ -347,6 +347,8 @@ def calculate_eye_distance(left_eye, right_eye):
 
 
 known_faces_dict = load_known_faces()
+
+
 def update_selected_key(request):
     selected_key = request.POST.get('selected_key', '')
     request.session['selected_key'] = selected_key
@@ -599,6 +601,7 @@ def employee_login_dtr(request, name, face_encoding,current_time):
             print(global_variable_name) 
             print("Successfully NO BEAKOUT AND BREAKIN block executed")
             get_name(request)
+            
 
         
 

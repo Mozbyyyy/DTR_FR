@@ -21,7 +21,32 @@ RUN apt-get update && apt-get install -y \
     libavcodec-dev \
     libswresample-dev \
     libswscale-dev \
-    libavutil-dev && \
+    libavutil-dev \
+    libatlas-base-dev \
+    libatlas3-base \
+    libhdf5-dev \
+    libhdf5-103 \
+    libqt5gui5 \
+    libqt5core5a \
+    libqt5test5 \
+    libqt5widgets5 \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libgtk-3-dev \
+    libx11-dev \
+    libboost-all-dev \
+    libblas-dev \
+    libffi-dev \
+    libssl-dev \
+    libopenblas-dev \
+    liblapack-dev \
+    liblapacke-dev \
+    libjpeg62-turbo-dev \
+    zlib1g-dev \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module \
+    libqt5opengl5-dev && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
@@ -36,3 +61,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
+
+
