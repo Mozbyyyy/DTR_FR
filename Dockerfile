@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu20.04
+FROM m03geek/dlib-node
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -44,3 +44,6 @@ RUN pip install --no-cache-dir \
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
+
+
+
