@@ -1,3 +1,13 @@
+FROM mcr.microsoft.com/windows/servercore:ltsc2019 
+
+WORKDIR /app
+
+COPY dlib-19.24.1-cp311-cp311-win_amd64.whl .  
+
+RUN pip install dlib-19.24.1-cp311-cp311-win_amd64.whl  
+
+
+
 FROM python:3.9-slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
