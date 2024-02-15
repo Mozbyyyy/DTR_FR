@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/servercore:ltsc2019-amd64 # Specify architecture explicitly
+
 
 # Install Python 3.11
 RUN mkdir C:\Python \
