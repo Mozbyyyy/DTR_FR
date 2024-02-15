@@ -1,7 +1,6 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019-amd64 # Specify architecture explicitly
+FROM mcr.microsoft.com/windows/servercore:ltsc2019-amd64
 
 
-# Install Python 3.11
 RUN mkdir C:\Python \
     && Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.1/python-3.11.1-amd64.exe" -OutFile python-installer.exe \
     && Start-Process python-installer.exe -ArgumentList "/quiet", "TargetDir=C:\Python", "/NoRegistryChecks" -Wait \
